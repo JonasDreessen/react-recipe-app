@@ -10,7 +10,6 @@ const [search, setSearch] = useState({
 
    const handleChange = (e) => {
         setSearch({typedText: e.target.value})
-        console.log(e.target.value)
     }
 
     return (

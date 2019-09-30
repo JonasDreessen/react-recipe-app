@@ -1,33 +1,45 @@
 import React from "react"
 import {useState} from "react"
 import {useEffect} from "react"
+import Ingredients from "./ingredients"
 
 
 const ApiCall = (props) => {
     const [recipe, setRecipe] = useState([])
 
-    useEffect(() => {
-        fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${props.searchTerm}`)
-        .then(response => response.json())
-        .then(data => setRecipe(data))
-      },[props.searchTerm]);
+        useEffect(() => {
+            fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${props.searchTerm}`)
+            .then(response => response.json())
+            .then(data => setRecipe(data))
+        },[props.searchTerm]);
 
-      console.log(recipe.meals)
       let searchedRecipe
       if(recipe.meals !== undefined){
+
           if(recipe.meals === null) {
              return <h2>Cannot find this recipe</h2>
+             
           } else {
-        searchedRecipe = recipe.meals.map(meal => 
-            <h5 key={meal.idMeal}> {meal.strMeal} </h5>
+                searchedRecipe = recipe.meals.map(meal => {
+
+               return (
+                <div className="recipe" key={meal.idMeal}>
+                    <h3> {meal.strMeal} </h3>
+                    <img src={meal.strMealThumb} alt={meal.strMeal + "picture"} className="recipe-picture"/>
+                    <Ingredients ingredients={meal}/>
+                </div>
+               )
+                }
             )
-        return searchedRecipe
+        
       }
     }
 
 
     return(
-        <h3> {searchedRecipe}</h3>
+        <div className="searched-recipes-container">
+                {searchedRecipe}
+        </div>
     )
 
 }
